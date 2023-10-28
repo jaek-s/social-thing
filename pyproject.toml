@@ -1,0 +1,21 @@
+[project]
+name = "social-thing"
+version = "0.0.0"
+description = "A social media website as a programming exercise"
+authors = [
+    { name = "Jake Salgado", email = "5466068+jaek-s@users.noreply.github.com" },
+]
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.23.2",
+    "sqlmodel @ git+https://github.com/AntonDeMeester/sqlmodel.git",
+]
+requires-python = ">=3.12"
+readme = "README.md"
+license = { text = "MIT" }
+
+[tool.pdm.scripts]
+dev = { cmd = "uvicorn main:app --app-dir app/ --reload" }
+
+[tool.pdm.dev-dependencies]
+dev = ["black>=23.10.1"]
