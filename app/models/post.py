@@ -1,6 +1,10 @@
 from datetime import datetime
+from typing import TYPE_CHECKING
 
-from sqlmodel import SQLModel, Field
+from sqlmodel import SQLModel, Field, Relationship
+
+if TYPE_CHECKING:
+    from app.models.comment import Comment
 
 
 class PostBase(SQLModel):
@@ -22,8 +26,10 @@ class PostCreate(PostBase):
 class PostRead(PostBase):
     id: int
     created: datetime = datetime.now()
-    updated: datetime | None = None
+    edited: datetime | None = None
     deleted: datetime | None = None
+
+    comments: list["Comment"] = Relationship(back_populates="post")
 
 
 class Post(PostRead, table=True):
