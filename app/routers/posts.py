@@ -54,12 +54,7 @@ def get_post(
 
     post_read.comments = [
         models.CommentRead.from_orm(db_comment)
-        for db_comment in db_session.exec(
-            select(Comment)
-            .where(col(Comment.deleted) == None)
-            .order_by(Comment.submitted)
-            .limit(25)
-        ).all()
+        for db_comment in Comment.get_list(db_session)
     ]
 
     return post_read
@@ -71,7 +66,6 @@ def edit_post(
     db_post: Annotated[Post, Depends(get_active_post_from_path_param)],
     db_session: Annotated[Session, Depends(get_db_session)],
 ):
-    # This works so long as the post model is not deeply nested.
     for key, value in post_updates.dict(exclude_unset=True).items():
         setattr(db_post, key, value)
 
