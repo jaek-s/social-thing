@@ -4,6 +4,11 @@ from sqlmodel import SQLModel, create_engine
 # We'll import everything here to be safe.
 from app import models
 
+# Models with circular references need to be updated. This is not DB specific per se,
+# but needs to happen before anything else. This is the perfect spot since models
+# need to be imported here anyways.
+models.PostReadWithComments.update_forward_refs(CommentRead=models.CommentRead)
+
 sqlite_file_name = "database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 

@@ -1,3 +1,4 @@
+from pprint import pprint
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
@@ -20,7 +21,8 @@ def create_comment(
     db_post: Annotated[Post, Depends(get_post_from_path_param)],
     db_session: Annotated[Session, Depends(get_db_session)],
 ):
-    db_comment = Comment.model_validate(new_comment)
+    db_comment = Comment.from_orm(new_comment)
+    pprint(db_comment)
     db_comment.post = db_post
 
     db_session.add(db_comment)

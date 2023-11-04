@@ -6,16 +6,16 @@ authors = [
     { name = "Jake Salgado", email = "5466068+jaek-s@users.noreply.github.com" },
 ]
 dependencies = [
-    "fastapi>=0.104.0",
+    "fastapi>=0.104.1",
     "uvicorn[standard]>=0.23.2",
-    "sqlmodel @ git+https://github.com/AntonDeMeester/sqlmodel.git",
+    "sqlmodel>=0.0.11",
 ]
 requires-python = ">=3.12"
 readme = "README.md"
 license = { text = "MIT" }
 
-[tool.pdm.scripts]
-dev = { cmd = "uvicorn main:app --app-dir app/ --reload" }
-
 [tool.pdm.dev-dependencies]
 dev = ["black>=23.10.1"]
+
+[tool.pdm.scripts]
+dev = { cmd = "uvicorn main:app --app-dir app/ --reload" }
