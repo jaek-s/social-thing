@@ -35,5 +35,6 @@ class Comment(CommentRead, table=True):
             select(cls)
             .where(col(cls.deleted) == None)
             .order_by(cls.submitted)
-            .limit(25)
+            .offset(offset)
+            .limit(limit)
         ).all()

@@ -22,13 +22,7 @@ def get_post_list(
     offset: int = Query(default=0),
     limit: int = Query(default=25, lte=100),
 ):
-    return db_session.exec(
-        select(Post)
-        .where(col(Post.deleted) == None)
-        .order_by(Post.submitted)
-        .offset(offset)
-        .limit(limit)
-    ).all()
+    return Post.get_list(db_session, offset=offset, limit=limit)
 
 
 @router.post("/posts")
