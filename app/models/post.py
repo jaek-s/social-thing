@@ -39,13 +39,3 @@ class Post(PostRead, table=True):
     deleted: datetime | None = None
 
     comments: list["Comment"] = Relationship(back_populates="post")
-
-    @classmethod
-    def get_list(cls, db_session: Session, offset: int = 0, limit: int = 25):
-        return db_session.exec(
-            select(cls)
-            .where(col(cls.deleted) == None)
-            .order_by(cls.submitted)
-            .offset(offset)
-            .limit(limit)
-        ).all()

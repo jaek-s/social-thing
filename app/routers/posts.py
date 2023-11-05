@@ -22,7 +22,13 @@ def get_post_list(
     offset: int = Query(default=0),
     limit: int = Query(default=25, lte=100),
 ):
-    return Post.get_list(db_session, offset=offset, limit=limit)
+    return db_session.exec(
+        select(Post)
+        .where(col(Post.deleted) == None)
+        .order_by(Post.submitted)
+        .offset(offset)
+        .limit(limit)
+    ).all()
 
 
 @router.post("/posts")
@@ -46,9 +52,15 @@ def get_post(
     post_read_without_comments = models.PostRead.from_orm(db_post)
     post_read = models.PostReadWithComments.from_orm(post_read_without_comments)
 
+    comment_list = db_session.exec(
+        select(Comment)
+        .where(col(Comment.deleted) == None, col(Comment.post_id == db_post.id))
+        .order_by(Comment.submitted)
+        .limit(20)
+    ).all()
+
     post_read.comments = [
-        models.CommentRead.from_orm(db_comment)
-        for db_comment in Comment.get_list(db_session)
+        models.CommentRead.from_orm(db_comment) for db_comment in comment_list
     ]
 
     return post_read

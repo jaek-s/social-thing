@@ -28,13 +28,3 @@ class Comment(CommentRead, table=True):
 
     post_id: int | None = Field(default=None, foreign_key="post.id")
     post: Optional["Post"] = Relationship(back_populates="comments")
-
-    @classmethod
-    def get_list(cls, db_session: Session, offset: int = 0, limit: int = 25):
-        return db_session.exec(
-            select(cls)
-            .where(col(cls.deleted) == None)
-            .order_by(cls.submitted)
-            .offset(offset)
-            .limit(limit)
-        ).all()
