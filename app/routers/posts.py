@@ -31,7 +31,10 @@ def get_post_list(
     ).all()
 
 
-@router.post("/posts")
+@router.post(
+    "/posts",
+    status_code=status.HTTP_201_CREATED,
+)
 def create_post(
     new_post: models.PostCreate, db_session: Annotated[Session, Depends(get_db_session)]
 ):
@@ -56,7 +59,7 @@ def get_post(
         select(Comment)
         .where(col(Comment.deleted) == None, col(Comment.post_id == db_post.id))
         .order_by(Comment.submitted)
-        .limit(20)
+        .limit(25)
     ).all()
 
     post_read.comments = [
@@ -64,6 +67,17 @@ def get_post(
     ]
 
     return post_read
+
+
+@router.delete("/posts/{post_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_post(
+    db_post: Annotated[Post, Depends(get_active_post_from_path_param)],
+    db_session: Annotated[Session, Depends(get_db_session)],
+):
+    db_post.deleted = datetime.now()
+
+    db_session.add(db_post)
+    db_session.commit()
 
 
 @router.patch("/posts/{post_id}", response_model=models.PostRead)
@@ -82,14 +96,3 @@ def edit_post(
     db_session.refresh(db_post)
 
     return db_post
-
-
-@router.delete("/posts/{post_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_post(
-    db_post: Annotated[Post, Depends(get_active_post_from_path_param)],
-    db_session: Annotated[Session, Depends(get_db_session)],
-):
-    db_post.deleted = datetime.now()
-
-    db_session.add(db_post)
-    db_session.commit()

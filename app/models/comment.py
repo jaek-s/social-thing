@@ -7,6 +7,10 @@ if TYPE_CHECKING:
     from app.models.post import Post
 
 
+class CommentUpdate(SQLModel):
+    content: str | None = None
+
+
 class CommentBase(SQLModel):
     content: str
     author: str

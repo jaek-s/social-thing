@@ -2,6 +2,7 @@ from .comment import (
     Comment as Comment,
     CommentCreate as CommentCreate,
     CommentRead as CommentRead,
+    CommentUpdate as CommentUpdate,
 )
 
 from .post import (
