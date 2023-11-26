@@ -17,13 +17,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     lifespan=lifespan,
-    docs_url="/api/docs",
-    redoc_url="/api/redoc",
-    openapi_url="/api/openapi.json",
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json",
 )
-main_router = APIRouter(prefix="/api")
 
-main_router.include_router(posts.router)
-main_router.include_router(comments.router)
-
-app.include_router(main_router)
+app.include_router(posts.router)
+app.include_router(comments.router)
