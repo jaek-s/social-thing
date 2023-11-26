@@ -6,7 +6,9 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "format": "prettier -w .",
+        "generate-client": "openapi --input http://localhost:8000/openapi.json --output ./app/apiClient"
     },
     "dependencies": {
         "next": "14.0.3",
@@ -20,6 +22,7 @@
         "autoprefixer": "^10.0.1",
         "eslint": "^8",
         "eslint-config-next": "14.0.3",
+        "openapi-typescript-codegen": "^0.25.0",
         "postcss": "^8",
         "prettier": "^3.1.0",
         "prettier-plugin-tailwindcss": "^0.5.7",
